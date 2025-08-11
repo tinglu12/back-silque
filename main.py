@@ -11,8 +11,6 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 app.include_router(api_v1_router, prefix="/api/v1")
 
-database.Base.metadata.drop_all(bind=engine)
-database.Base.metadata.create_all(bind=engine)
 
 origins = [
     "http://localhost:3000",

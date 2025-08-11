@@ -58,5 +58,6 @@ echo "Creating bucket '$BUCKET_NAME'..."
 aws --endpoint-url=http://localhost:4566 s3 mb s3://$BUCKET_NAME
 
 echo "Setup complete! LocalStack running with bucket '$BUCKET_NAME'."
+export S3_BUCKET_NAME="$BUCKET_NAME"
 export PYTHONPATH=.
 fastapi dev main.py
