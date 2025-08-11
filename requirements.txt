@@ -26,10 +26,6 @@ idna==3.10
 Jinja2==3.1.6
 jmespath==1.0.1
 jsonpickle==4.1.1
-localstack==4.7.0
-localstack-client==2.10
-localstack-core==4.7.0
-localstack-ext==4.7.0
 markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 mdurl==0.1.2

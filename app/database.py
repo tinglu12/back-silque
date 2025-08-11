@@ -7,12 +7,19 @@ import boto3
 
 load_dotenv()
 
+if os.getenv("DATABASE_URL") is None:
+    raise ValueError("DATABASE_URL environment variable is not set")
+
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
+
+
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+if OS.getenv("AWS_ACCESS_KEY_ID") is None or os.getenv("AWS_SECRET_ACCESS_KEY") is None:
+    raise ValueError("AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables must be set")
 
 s3 = boto3.client(
     "s3",
