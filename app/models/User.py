@@ -1,13 +1,18 @@
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Query
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from sqlalchemy import Column
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import Session
 
-class User(SQLModel, table=True):
+from app.database import Base
+
+
+class User(Base):
     __tablename__ = "users"
 
-    id: int = Field(default=None, primary_key=True)
-    username: str = Field(index=True, unique=True, nullable=False)
-    email: str = Field(index=True, unique=True, nullable=False)
-    password_hash: str = Field(nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, index=True, unique=True, nullable=False)
+    email = Column(String, index=True, unique=True, nullable=False)
+    password_hash = Column(String, nullable=False)
 
