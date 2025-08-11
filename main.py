@@ -6,6 +6,7 @@ from app import database
 from app.models.User import User
 from app.routers.v1.router import router as api_v1_router
 from app.database import engine, Base
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.include_router(api_v1_router, prefix="/api/v1")
@@ -13,6 +14,18 @@ app.include_router(api_v1_router, prefix="/api/v1")
 database.Base.metadata.drop_all(bind=engine)
 database.Base.metadata.create_all(bind=engine)
 
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
