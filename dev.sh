@@ -2,7 +2,42 @@
 
 # FastAPI Development Server Script
 # Sets PYTHONPATH to include current directory and starts the dev server
-# Usage: ./dev.sh [check-s3] [bucket-name]
+# Usage: ./dev.sh [command] [args...]
+
+# Define all available commands (scalable registry)
+declare -A COMMANDS=(
+    ["check-s3"]="check_s3"
+    # Add new commands here like:
+    # ["setup-db"]="setup_database"
+    # ["reset-s3"]="reset_s3_bucket"
+)
+
+# Generate help text automatically from command registry
+generate_help() {
+    echo "Usage: $0 [command] [args...]"
+    echo ""
+    echo "Available commands:"
+    for cmd in "${!COMMANDS[@]}"; do
+        echo "  $cmd"
+    done
+    echo ""
+    echo "  (no command) - Start FastAPI development server"
+    echo ""
+    echo "Examples:"
+    echo "  $0                    # Start dev server"
+    echo "  $0 check-s3          # Check S3 bucket contents"
+    echo "  $0 check-s3 my-bucket # Check specific bucket"
+}
+
+# Validate arguments
+if [[ $# -gt 0 ]]; then
+    if [[ -z "${COMMANDS[$1]}" ]]; then
+        echo "❌ Error: Unknown command '$1'"
+        echo ""
+        generate_help
+        exit 1
+    fi
+fi
 
 # Function to check S3 bucket contents
 check_s3() {
@@ -24,9 +59,11 @@ check_s3() {
     echo "✅ Done!"
 }
 
-# Check if user wants to check S3 instead of starting server
-if [[ "$1" == "check-s3" ]]; then
-    check_s3 "$2"
+# Execute command if provided
+if [[ $# -gt 0 ]]; then
+    command_func="${COMMANDS[$1]}"
+    shift  # Remove the command from arguments
+    $command_func "$@"
     exit 0
 fi
 
